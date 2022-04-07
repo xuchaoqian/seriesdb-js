@@ -23,6 +23,7 @@ let db;
 let table;
 let table2;
 let table3;
+let table4;
 const count = 1000;
 const firstTs = 1626814980;
 const lastTs = firstTs + 60 * (count - 1);
@@ -32,12 +33,14 @@ beforeAll(async () => {
   table = await db.openTable("table", "ts");
   table2 = await db.openTable("table2", "ts");
   table3 = await db.openTable("table3", "ts");
+  table4 = await db.openTable("table3", "ts");
 });
 
 afterAll(async () => {
   await db.destroyTable("table");
   await db.destroyTable("table2");
   await db.destroyTable("table3");
+  await db.destroyTable("table4");
   db.close();
   await Db.destroy("db");
 });
@@ -49,6 +52,7 @@ beforeEach(async () => {
   await table2.put(buildRowsSince(firstTs, count));
   await table3.clear();
   await table3.put(buildRowsSince(firstTs, count));
+  await table4.clear();
 });
 
 // eslint-disable-next-line jest/expect-expect
@@ -69,11 +73,15 @@ test("table.deleteUntil", async () => {
 test("table.get", async () => {
   const result = await table.get(firstTs + step(3));
   expect(result).toStrictEqual(buildRowsSince(firstTs + step(3), 1)[0]);
+  const result2 = await table.get(firstTs - step(1));
+  expect(result2).toStrictEqual(undefined);
 });
 
 test("table.getAll", async () => {
   const result = await table.getAll();
   expect(result).toStrictEqual(buildRowsSince(firstTs, count));
+  const result2 = await table4.getAll();
+  expect(result2).toStrictEqual([]);
 });
 
 test("table.getSinceXxx", async () => {
