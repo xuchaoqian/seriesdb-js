@@ -16,6 +16,7 @@ export declare class Table<R extends Row = Row> {
     deleteUntil(endKey: Key): Promise<void>;
     deleteBetween(startKey: Key, endKey: Key): Promise<void>;
     clear(): Promise<void>;
+    get(key: Key): Promise<R>;
     getAll(): Promise<R[]>;
     getSince(startKey: Key, limit: number): Promise<R[]>;
     getSinceFirst(limit: number): Promise<R[]>;

@@ -99,6 +99,21 @@ export class Table<R extends Row = Row> {
     );
   }
 
+  get(key: Key): Promise<R> {
+    return this._store.openTransaction(
+      "readonly",
+      (resolve, reject, rawStore: IDBObjectStore) => {
+        const request = rawStore.get(this._buildId(key));
+        request.onerror = (event: Event) => {
+          reject(new Error(`Failed to get: error: ${extractErrorMsg(event)}`));
+        };
+        request.onsuccess = (event: Event) => {
+          resolve((event.target as IDBRequest).result);
+        };
+      }
+    );
+  }
+
   getAll(): Promise<R[]> {
     return this._store.openTransaction(
       "readonly",

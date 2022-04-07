@@ -66,6 +66,11 @@ test("table.deleteUntil", async () => {
   expect(await table.count()).toStrictEqual(count - 1);
 });
 
+test("table.get", async () => {
+  const result = await table.get(firstTs + step(3));
+  expect(result).toStrictEqual(buildRowsSince(firstTs + step(3), 1)[0]);
+});
+
 test("table.getAll", async () => {
   const result = await table.getAll();
   expect(result).toStrictEqual(buildRowsSince(firstTs, count));
