@@ -1,0 +1,56 @@
+{
+  "name": "seriesdb-js",
+  "version": "0.7.0",
+  "description": "Seriesdb implementation for js.",
+  "author": "Chaoqian Xu <chaoranxu@gmail.com>",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "npx tsc",
+    "pack": "npx webpack --config webpack.config.js --progress",
+    "start": "npx webpack serve",
+    "test": "npx jest --coverage",
+    "format": "npx prettier --write \"src/**/*.{js,ts}\" \"test/**/*.{js,ts}\" --ignore-path *.d.ts",
+    "lint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx --ignore-pattern *.d.ts",
+    "clean": "rm -rf dist/* lib/* data/*"
+  },
+  "files": [
+    "lib",
+    "LICENSE"
+  ],
+  "repository": "https://github.com/xuchaoqian/seriesdb-js.git",
+  "dependencies": {
+    "@msgpack/msgpack": "^2.7.2",
+    "adler-32": "^1.3.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.9",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
+    "@types/jest": "^27.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
+    "babel-jest": "^27.5.1",
+    "bufferutil": "^4.0.6",
+    "canvas": "^2.9.1",
+    "eslint": "^8.12.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-jest": "^26.1.3",
+    "html-webpack-plugin": "^5.5.0",
+    "indexeddbshim": "^9.0.0",
+    "jest": "^27.5.1",
+    "prettier": "^2.6.2",
+    "sqlite3": "^5.0.2",
+    "dexie": "^3.0.2",
+    "ts-loader": "^9.2.8",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3",
+    "utf-8-validate": "^5.0.9",
+    "webpack": "^5.71.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.8.1"
+  },
+  "peerDependencies": {}
+}
