@@ -1,6 +1,6 @@
 {
   "name": "seriesdb-js",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "Seriesdb implementation for js.",
   "author": "Chaoqian Xu <chaoranxu@gmail.com>",
   "license": "MIT",

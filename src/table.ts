@@ -25,7 +25,23 @@ export class Table<R extends Row = Row> {
     this._lastNextId = this._buildLastNextId();
   }
 
-  put(rows: R[]): Promise<void> {
+  put(row: R): Promise<void> {
+    return this._store.openTransaction(
+      "readwrite",
+      (resolve, reject, rawStore: IDBObjectStore) => {
+        const id = this._buildId(row[this._keyName]);
+        const request = rawStore.put(row, id);
+        request.onerror = (event: Event) => {
+          reject(new Error(`Failed to put: error: ${extractErrorMsg(event)}`));
+        };
+        request.onsuccess = () => {
+          resolve();
+        };
+      }
+    );
+  }
+
+  putAll(rows: R[]): Promise<void> {
     return this._store.openTransaction(
       "readwrite",
       (resolve, reject, rawStore: IDBObjectStore) => {
@@ -65,6 +81,23 @@ export class Table<R extends Row = Row> {
           } else {
             resolve();
           }
+        };
+      }
+    );
+  }
+
+  delete(key: Key): Promise<void> {
+    return this._store.openTransaction(
+      "readwrite",
+      (resolve, reject, rawStore: IDBObjectStore) => {
+        const request = rawStore.delete(this._buildId(key));
+        request.onerror = (event: Event) => {
+          reject(
+            new Error(`Failed to delete: error: ${extractErrorMsg(event)}`)
+          );
+        };
+        request.onsuccess = () => {
+          resolve();
         };
       }
     );

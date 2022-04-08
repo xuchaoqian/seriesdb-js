@@ -11,7 +11,9 @@ export declare class Table<R extends Row = Row> {
     private _firstPrevId;
     private _lastNextId;
     constructor(name: string, keyName: keyof R, store: Store);
-    put(rows: R[]): Promise<void>;
+    put(row: R): Promise<void>;
+    putAll(rows: R[]): Promise<void>;
+    delete(key: Key): Promise<void>;
     deleteSince(startKey: Key): Promise<void>;
     deleteUntil(endKey: Key): Promise<void>;
     deleteBetween(startKey: Key, endKey: Key): Promise<void>;

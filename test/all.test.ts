@@ -47,17 +47,27 @@ afterAll(async () => {
 
 beforeEach(async () => {
   await table.clear();
-  await table.put(buildRowsSince(firstTs, count));
+  await table.putAll(buildRowsSince(firstTs, count));
   await table2.clear();
-  await table2.put(buildRowsSince(firstTs, count));
+  await table2.putAll(buildRowsSince(firstTs, count));
   await table3.clear();
-  await table3.put(buildRowsSince(firstTs, count));
+  await table3.putAll(buildRowsSince(firstTs, count));
   await table4.clear();
 });
 
+test("table.put&get&delete", async () => {
+  const row = buildRowsSince(firstTs, 1)[0];
+  await table.put(row);
+  const result = await table.get(firstTs);
+  expect(result).toStrictEqual(row);
+  await table.delete(row.ts);
+  const result2 = await table.get(firstTs);
+  expect(result2).toStrictEqual(undefined);
+});
+
 // eslint-disable-next-line jest/expect-expect
-test("table.put", async () => {
-  await table.put([]);
+test("table.putAll", async () => {
+  await table.putAll([]);
 });
 
 test("table.deleteSince", async () => {
