@@ -20,11 +20,7 @@ export class Store {
     ) => void
   ): Promise<T> {
     return new Promise((resolve, reject) => {
-      // @ts-expect-error: Expected 1-2 arguments, but got 3
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const tx = this._db.openTransaction(this._name, mode, {
-        durability: "relaxed",
-      });
+      const tx = this._db.openTransaction(this._name, mode);
       const rawStore = tx.objectStore(this._name);
       operation(resolve, reject, rawStore, tx);
     });

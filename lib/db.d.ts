@@ -4,6 +4,7 @@ export declare class Db {
     private _storeCount;
     private _rawDb;
     private _shouldReopen;
+    private _tableCache;
     private constructor();
     static open(name: string, storeCount?: number): Promise<Db>;
     close(): void;

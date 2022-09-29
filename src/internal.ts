@@ -1,4 +1,5 @@
 export * from "./db";
-export * from "./table";
 export * from "./store";
-export * from "./misc";
+export * from "./table";
+export * from "./types";
+export * from "./utils";

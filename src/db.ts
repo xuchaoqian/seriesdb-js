@@ -6,6 +6,7 @@ export class Db {
   private _storeCount: number;
   private _rawDb: IDBDatabase;
   private _shouldReopen: boolean;
+  private _tableCache: Map<string, unknown>;
 
   /** @internal */
   private constructor(name: string, storeCount: number, rawDb: IDBDatabase) {
@@ -13,6 +14,7 @@ export class Db {
     this._storeCount = storeCount;
     this._rawDb = rawDb;
     this._shouldReopen = true;
+    this._tableCache = new Map();
 
     rawDb.onclose = () => {
       console.log(`Db was closed: name: ${name}`);
@@ -48,6 +50,7 @@ export class Db {
 
   close(): void {
     this._shouldReopen = false;
+    this._tableCache.clear();
     this._rawDb.close();
   }
 
@@ -76,8 +79,13 @@ export class Db {
     keyName: keyof R
   ): Promise<Table<R>> {
     return new Promise((resolve) => {
-      const storeName = this._selectStoreName(tableName);
-      resolve(new Table(tableName, keyName, new Store(storeName, this)));
+      let table = this._tableCache.get(tableName);
+      if (typeof table === "undefined") {
+        const storeName = this._selectStoreName(tableName);
+        table = new Table(tableName, keyName, new Store(storeName, this));
+        this._tableCache.set(tableName, table);
+      }
+      resolve(table as Table<R>);
     });
   }
 
@@ -88,13 +96,12 @@ export class Db {
         .clear()
         .then(() => resolve())
         .catch((reason) => reject(reason));
+      this._tableCache.delete(tableName);
     });
   }
 
   /** @internal */
   openTransaction(storeName: string, mode: IDBTransactionMode): IDBTransaction {
-    // @ts-expect-error: Expected 1-2 arguments, but got 3
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this._rawDb.transaction(storeName, mode, {
       durability: "relaxed",
     });

@@ -189,7 +189,7 @@ interface Candle {
 }
 
 function buildRowsSince(startTs: number, n: number): Candle[] {
-  const rows = [];
+  const rows: Candle[] = [];
   for (let i = 0; i < n; i++) {
     rows.push({
       ts: startTs + i * 60,
@@ -205,7 +205,7 @@ function buildRowsSince(startTs: number, n: number): Candle[] {
 }
 
 function buildRowsUntil(endTs: number, n: number): Candle[] {
-  const rows = [];
+  const rows: Candle[] = [];
   for (let i = 0; i < n; i++) {
     rows.unshift({
       ts: endTs - i * 60,
